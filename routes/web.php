@@ -26,13 +26,12 @@ Route::middleware([
     })->name('/dashboard');
 });
 
-<<<<<<< HEAD
 Route::prefix('assistence')->group(function () {
     Route::resource('absent', AssistanceController::class);
 //     Route::resource('purchase-orders-invoices', SupplierInvoicesController::class);
 //     Route::resource('supplier', SupplierController::class);
 });
-=======
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -46,10 +45,10 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->prefix('catalogos')->group(function () {
+    Route::resource('plantas', Controlador::class);
     //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
 });
 
 //Route::get('/plantas', [PlantaController::class, 'byUser'])->name('plantas');
 //Route::get('/planta/usuario', [EmpleadoController::class, 'getPlantaEmpleado'])->name('planta.usuario');
 
->>>>>>> f460e2d54190c0ff8ac68973ef3407d40d4109fd
