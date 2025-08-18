@@ -104,4 +104,14 @@ class User extends Authenticatable
     //             ->delete();
     //     }
     // }
+
+    public function branchOffices()
+    {
+        return $this->belongsToMany(
+            Planta::class,
+            'branch_office_user',     
+            'user_id',                
+            'branch_office_id'        
+        );
+    }
 }

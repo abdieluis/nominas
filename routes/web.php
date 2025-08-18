@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\PlantaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,11 +21,35 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard'); // Inertia busca en 'resources/js/pages/Dashboard.vue'
+    })->name('/dashboard');
 });
 
+<<<<<<< HEAD
 Route::prefix('assistence')->group(function () {
     Route::resource('absent', AssistanceController::class);
 //     Route::resource('purchase-orders-invoices', SupplierInvoicesController::class);
 //     Route::resource('supplier', SupplierController::class);
 });
+=======
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/plantas', [PlantaController::class, 'getPlantas'])->name('plantas');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->prefix('catalogos')->group(function () {
+    //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
+});
+
+//Route::get('/plantas', [PlantaController::class, 'byUser'])->name('plantas');
+//Route::get('/planta/usuario', [EmpleadoController::class, 'getPlantaEmpleado'])->name('planta.usuario');
+
+>>>>>>> f460e2d54190c0ff8ac68973ef3407d40d4109fd

@@ -36,6 +36,7 @@ import { Link } from "@inertiajs/vue3";
 import Tabs from "primevue/tabs";
 import TabList from "primevue/tablist";
 import Tab from "primevue/tab";
+import { createPinia } from "pinia";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -138,6 +139,7 @@ createInertiaApp({
         app.component("Tabs", Tabs);
         app.component("TabList", TabList);
         app.component("Tab", Tab);
+        app.use(createPinia());
         app.mount(el);
 
         if (typeof KTApp !== "undefined" && KTApp.init) {
