@@ -48,6 +48,17 @@ const model = ref([
                     },
                 ],
             },
+            {
+                label: "Catalogos",
+                icon: "pi pi-fw pi-calendar",
+                items: [
+                    {
+                        label: "Prestaciones",
+                        icon: "pi pi-circle",
+                        to: "/catalogos/prestaciones",
+                    },
+                ],
+            },
             // {
             //     label: "Seguridad",
             //     icon: "pi pi-fw pi-shield",
