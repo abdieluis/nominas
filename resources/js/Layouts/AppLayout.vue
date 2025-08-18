@@ -5,6 +5,7 @@ import AppFooter from "./AppFooter.vue";
 import AppSidebar from "./AppSidebar.vue";
 import AppTopbar from "./AppTopbar.vue";
 import { Head } from "@inertiajs/vue3";
+import Toast from '@/Components/Toast.vue';
 
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
 
@@ -79,6 +80,7 @@ function isOutsideClicked(event) {
             <app-footer></app-footer>
         </div>
         <div class="layout-mask animate-fadein"></div>
+        <Toast />
     </div>
-    <Toast />
+    
 </template>

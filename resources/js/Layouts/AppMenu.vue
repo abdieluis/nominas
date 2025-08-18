@@ -15,75 +15,70 @@ const model = ref([
         ],
     },
     {
-        label: "Administración",
+        label: "Nominas",
         items: [
             {
-                label: "Catalogos",
-                icon: "pi pi-fw pi-id-card",
+                label: "Asistencias",
+                icon: "pi pi-fw pi-calendar",
                 items: [
                     {
-                        label: "Departamentos",
-                        icon: "pi pi-book",
+                        label: "Reporte de Ausentismos",
+                        icon: "pi pi-circle",
                         to: "/catalogo/departamentos",
                     },
                     {
-                        label: "Categorias de Gastos",
-                        icon: "pi pi-dollar",
+                        label: "Asistencia Semanal",
+                        icon: "pi pi-circle",
                         to: "/catalogo/categorias-gastos",
                     },
                     {
-                        label: "Ubicaciones",
-                        icon: "pi pi-building",
+                        label: "Registros de Asistencias",
+                        icon: "pi pi-circle",
                         to: "/catalogo/ubicaciones",
                     },
                     {
-                        label: "Cuentas Contables",
-                        icon: "pi pi-address-book",
+                        label: "Registros de AsistenciasV",
+                        icon: "pi pi-circle",
                         to: "/catalogo/cuentas-contables",
                     },
                     {
-                        label: "Clases",
-                        icon: "pi pi-folder-open",
+                        label: "Registros H.E.",
+                        icon: "pi pi-circle",
                         to: "/catalogo/clases",
                     },
-                    {
-                        label: "Portales",
-                        icon: "pi pi-desktop",
-                        to: "/catalogo/portales",
-                    },
                 ],
             },
-            {
-                label: "Seguridad",
-                icon: "pi pi-fw pi-shield",
-                items: [
-                    {
-                        label: "Usuarios",
-                        icon: "pi pi-users",
-                        to: "/seguridad/usuarios",
-                    },
-                    {
-                        label: "Roles",
-                        icon: "pi pi-briefcase",
-                        to: "/seguridad/roles",
-                    },
-                    {
-                        label: "Permisos",
-                        icon: "pi pi-lock",
-                        to: "/seguridad/permisos",
-                    },
-                    {
-                        label: "Vistas",
-                        icon: "pi pi-eye",
-                        to: "/seguridad/vistas",
-                    },
-                ],
-            },
+            // {
+            //     label: "Seguridad",
+            //     icon: "pi pi-fw pi-shield",
+            //     items: [
+            //         {
+            //             label: "Usuarios",
+            //             icon: "pi pi-users",
+            //             to: "/seguridad/usuarios",
+            //         },
+            //         {
+            //             label: "Roles",
+            //             icon: "pi pi-briefcase",
+            //             to: "/seguridad/roles",
+            //         },
+            //         {
+            //             label: "Permisos",
+            //             icon: "pi pi-lock",
+            //             to: "/seguridad/permisos",
+            //         },
+            //         {
+            //             label: "Vistas",
+            //             icon: "pi pi-eye",
+            //             to: "/seguridad/vistas",
+            //         },
+            //     ],
+            // },
         ],
     },
-    {
-        label: "Portales",
-    },
+    // {
+    //     label: "Portales",
+    // },
 ]);
 </script>
 
@@ -97,14 +92,14 @@ const model = ref([
             ></app-menu-item>
             <li v-if="item.separator" class="menu-separator"></li>
         </template>
-        <a
+        <!-- <a
             class="layout-menuitem-text"
             target="_blank"
             href="https://nominas.grupo-ortiz.site/"
         >
             <i class="pi pi-address-book mr-2"></i>
             <span class="layout-menuitem-text">Nominas</span>
-        </a>
+        </a> -->
     </ul>
 </template>
 
