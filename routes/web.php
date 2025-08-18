@@ -31,7 +31,6 @@ Route::prefix('assistence')->group(function () {
 //     Route::resource('purchase-orders-invoices', SupplierInvoicesController::class);
 //     Route::resource('supplier', SupplierController::class);
 });
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -45,7 +44,6 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->prefix('catalogos')->group(function () {
-    Route::resource('plantas', Controlador::class);
     //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
 });
 
