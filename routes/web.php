@@ -6,6 +6,7 @@ use App\Http\Controllers\PrestacionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AssistanceController;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login', [
@@ -26,6 +27,12 @@ Route::middleware([
     })->name('/dashboard');
 });
 
+Route::prefix('assistence')->group(function () {
+    Route::resource('absent', AssistanceController::class);
+//     Route::resource('purchase-orders-invoices', SupplierInvoicesController::class);
+//     Route::resource('supplier', SupplierController::class);
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -39,6 +46,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->prefix('catalogos')->group(function () {
+    Route::resource('plantas', Controlador::class);
     //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
     Route::get('prestaciones', [PrestacionController::class, 'index'])->name('/catalogos/prestaciones');
     Route::resource('prestaciones', PrestacionController::class)->except(['index']);

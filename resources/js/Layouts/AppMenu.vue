@@ -24,7 +24,7 @@ const model = ref([
                     {
                         label: "Reporte de Ausentismos",
                         icon: "pi pi-circle",
-                        to: "/catalogo/departamentos",
+                        to: "/assistence/absent",
                     },
                     {
                         label: "Asistencia Semanal",
@@ -59,32 +59,67 @@ const model = ref([
                     },
                 ],
             },
-            // {
-            //     label: "Seguridad",
-            //     icon: "pi pi-fw pi-shield",
-            //     items: [
-            //         {
-            //             label: "Usuarios",
-            //             icon: "pi pi-users",
-            //             to: "/seguridad/usuarios",
-            //         },
-            //         {
-            //             label: "Roles",
-            //             icon: "pi pi-briefcase",
-            //             to: "/seguridad/roles",
-            //         },
-            //         {
-            //             label: "Permisos",
-            //             icon: "pi pi-lock",
-            //             to: "/seguridad/permisos",
-            //         },
-            //         {
-            //             label: "Vistas",
-            //             icon: "pi pi-eye",
-            //             to: "/seguridad/vistas",
-            //         },
-            //     ],
-            // },
+            {
+                label: "Nominas",
+                icon: "pi pi-money-bill",
+                items: [
+                    {
+                        label: "Persepciones y Deducciones por Empleado",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/usuarios",
+                    },
+                    {
+                        label: "Clases de Empleado",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/roles",
+                    },
+                    {
+                        label: "Credito",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/permisos",
+                    },
+                    {
+                        label: "Movimientos de Credito",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/vistas",
+                    },
+                    {
+                        label: "Nominas Empleado",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/roles",
+                    },
+                    {
+                        label: "Recibos",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/permisos",
+                    },
+                    {
+                        label: "Tipos de Recibos",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/vistas",
+                    },
+                    {
+                        label: "Tipos de Asiento",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/vistas",
+                    },
+                    {
+                        label: "Cuentas",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/roles",
+                    },
+                    {
+                        label: "Fila Virtual",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/permisos",
+                    },
+                    {
+                        label: "Correos por Enviar",
+                        icon: "pi pi-circle",
+                        to: "/seguridad/vistas",
+                    },
+                ],
+            },
         ],
     },
     // {
