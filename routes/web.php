@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PlantaController;
+use App\Http\Controllers\PrestacionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,7 +37,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/plantas', [PlantaController::class, 'getPlantas'])->name('plantas');
+    Route::get('/plantas', [PlantaController::class, 'byUser'])->name('plantas');
 });
 
 Route::middleware([
@@ -45,6 +46,9 @@ Route::middleware([
     'verified',
 ])->prefix('catalogos')->group(function () {
     //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
+    Route::get('prestaciones', [PrestacionController::class, 'index'])->name('/catalogos/prestaciones');
+    Route::resource('prestaciones', PrestacionController::class)->except(['index']);
+
 });
 
 //Route::get('/plantas', [PlantaController::class, 'byUser'])->name('plantas');
