@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AssistanceController;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login', [
@@ -19,4 +20,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {return Inertia::render('Dashboard');})->name('dashboard');
+});
+
+Route::prefix('assistence')->group(function () {
+    Route::resource('absent', AssistanceController::class);
+//     Route::resource('purchase-orders-invoices', SupplierInvoicesController::class);
+//     Route::resource('supplier', SupplierController::class);
 });
