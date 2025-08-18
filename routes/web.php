@@ -33,6 +33,14 @@ Route::middleware([
     Route::get('/plantas', [PlantaController::class, 'getPlantas'])->name('plantas');
 });
 
-Route::get('/plantas', [PlantaController::class, 'byUser'])->name('plantas');
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->prefix('catalogos')->group(function () {
+    //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
+});
+
+//Route::get('/plantas', [PlantaController::class, 'byUser'])->name('plantas');
 //Route::get('/planta/usuario', [EmpleadoController::class, 'getPlantaEmpleado'])->name('planta.usuario');
 
