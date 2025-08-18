@@ -49,7 +49,7 @@ function createProduct() {
                             class="text-sm text-gray-600 font-normal ml-5 mt-0 mb-0"
                         >
                             <!-- {{ props.user[0] }} -->
-                            <Button label="Primary" :label="buscar" @click="createProduct" />
+                            <Button label="Primary" @click="createProduct" />
                         </h2>
                     </div>
                 </div>

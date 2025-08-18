@@ -1,7 +1,5 @@
 import { reactive } from 'vue';
 
-let timeoutId = null; // Variable para almacenar la referencia del temporizador
-
 export const toastStore = reactive({
     show: false,
     message: '',
@@ -11,25 +9,19 @@ export const toastStore = reactive({
         this.show = true;
         this.message = message;
         this.type = 'success';
-        this.startHideTimer();
+        this.hideToastAfterDelay();
     },
 
     showError(message = 'El proceso tuvo un error.') {
         this.show = true;
         this.message = message;
         this.type = 'error';
-        this.startHideTimer();
+        this.hideToastAfterDelay();
     },
 
-    startHideTimer() {
-        // Limpia el temporizador anterior si existe
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-        }
-
-        // Inicia un nuevo temporizador
-        timeoutId = setTimeout(() => {
+    hideToastAfterDelay() {
+        setTimeout(() => {
             this.show = false;
-        }, 3000); // Oculta después de 3 segundos
+        }, 3000); // Ocultar después de 3 segundos
     }
 });

@@ -12,13 +12,8 @@ const toastClass = reactive({
 watch(() => toastStore.type, (newType) => {
     toastClass['bg-green-500'] = newType === 'success';
     toastClass['bg-red-500'] = newType === 'error';
-
-    toast.add({ severity: 'info', summary: 'Exito', detail: 'Message Content', life: 3000 });
 }, { immediate: true });
 
-const showInfo = () => {
-    
-};
 </script>
 <template>
     <transition>
