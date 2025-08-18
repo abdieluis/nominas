@@ -2,10 +2,10 @@
 import { useLayout } from "./composables/layout";
 import { computed, ref, watch } from "vue";
 import AppFooter from "./AppFooter.vue";
-import AppSidebar from "./AppSidebar.vue";
-import AppTopbar from "./AppTopbar.vue";
+import AppSidebar from "./AppSideBar.vue";
+import AppTopbar from "./AppTopBar.vue";
 import { Head } from "@inertiajs/vue3";
-
+import Toast from '@/Components/Toast.vue';
 
 const { layoutConfig, layoutState, isSidebarActive } = useLayout();
 
