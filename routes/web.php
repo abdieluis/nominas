@@ -48,6 +48,7 @@ Route::middleware([
     //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
     Route::get('prestaciones', [PrestacionController::class, 'index'])->name('/catalogos/prestaciones');
     Route::resource('prestaciones', PrestacionController::class)->except(['index']);
+    Route::get('plantas', [PlantaController::class, 'index'])->name('catalogos.plantas.index');
 
 });
 

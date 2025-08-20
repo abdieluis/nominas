@@ -1,7 +1,11 @@
 <script setup>
 import { ref } from "vue";
-
+import { router } from "@inertiajs/vue3";
 import AppMenuItem from "./AppMenuItem.vue";
+
+const logout = () => {
+    router.post(route("logout"));
+};
 
 const model = ref([
     {
@@ -56,6 +60,11 @@ const model = ref([
                         label: "Prestaciones",
                         icon: "pi pi-circle",
                         to: "/catalogos/prestaciones",
+                    },
+                    {
+                        label: "Plantas",
+                        icon: "pi pi-circle",
+                        to: "/catalogos/plantas",
                     },
                 ],
             },
@@ -125,6 +134,18 @@ const model = ref([
     // {
     //     label: "Portales",
     // },
+    {
+        label: 'Sesión',
+        items: [
+            {
+                label: 'Cerrar sesión',
+                icon: 'pi pi-fw pi-sign-out',
+                command: () => {
+                    logout();
+                }
+            }
+        ]
+    },
 ]);
 </script>
 

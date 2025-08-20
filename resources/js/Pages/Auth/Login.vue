@@ -148,7 +148,7 @@ body,
                 >
                     <div class="">
                         <p class="text-gray-400 fw-bolder mb-3 text-lg">
-                            Portal General
+                            Portal Nominas
                         </p>
                     </div>
                     <div

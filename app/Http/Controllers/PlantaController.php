@@ -6,8 +6,8 @@ use App\Models\Planta;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class PlantaController
 {
@@ -16,34 +16,27 @@ class PlantaController
      */
     public function index()
     {
-        $selectColumns = [
-            'bo.id AS planta_id',
-            'bo.code AS codigo',
-            'bo.name AS planta',
-            'co.name AS empresa',
-            // Para JSON_UNQUOTE(json_extract(bo.meta, '$.tax_id')) se puede usar DB::raw
-            DB::raw("JSON_UNQUOTE(JSON_EXTRACT(bo.meta, '$.tax_id')) AS rfc"),
-            'bo.internal_code AS clave_netsuite',
-            'bo.external_location_id AS clave_ubicacion_netsuite',
-            'bok.certificate_path AS certificado_fiscal',
-            // Para DATE(bok.expires_at) se puede usar DB::raw
-            DB::raw("DATE(bok.expires_at) AS expiracion_clave"),
-            'bo.created_at',
-            'bo.updated_at',
-            'bo.description',
-            'bo.active',
-        ];
+        $plantas = Planta::select(
+            'branch_offices.id AS planta_id',
+            'branch_offices.code AS codigo',
+            'branch_offices.name AS planta',
+            'companies.name AS empresa',
+            DB::raw("JSON_UNQUOTE(JSON_EXTRACT(branch_offices.meta, '$.tax_id')) AS rfc"),
+            'branch_offices.internal_code AS clave_netsuite',
+            'branch_offices.external_location_id AS clave_ubicacion_netsuite',
+            'branch_office_fiscal_keys.certificate_path AS certificado_fiscal',
+            DB::raw('DATE(branch_office_fiscal_keys.expires_at) AS expiracion_clave'),
+            'branch_offices.created_at',
+            'branch_offices.updated_at',
+            'branch_offices.description',
+            'branch_offices.active'
+        )
+            ->join('companies', 'branch_offices.company_id', '=', 'companies.id')
+            ->join('branch_office_fiscal_keys', 'branch_offices.id', '=', 'branch_office_fiscal_keys.branch_office_id')
+            ->orderBy('branch_offices.id', 'DESC')
+            ->get();
 
-        // Construye la consulta usando el Query Builder de Laravel
-        $plantas = DB::table('branch_offices as bo')
-            ->select($selectColumns)
-            ->join('companies as co', 'bo.company_id', '=', 'co.id')
-            ->join('branch_office_fiscal_keys as bok', 'bo.id', '=', 'bok.branch_office_id')
-            ->orderBy('bo.id', 'DESC')
-            ->get(); // Obtiene los resultados de la consulta
-
-        // Retorna la vista de Inertia, pasando los datos a un componente Vue
-        return Inertia::render('Catalogo/Plantas/Index', [
+        return Inertia::render('Catalogos/Plantas/Index', [
             'plantas' => $plantas,
         ]);
     }
