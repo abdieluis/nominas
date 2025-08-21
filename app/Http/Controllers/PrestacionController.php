@@ -32,7 +32,28 @@ class PrestacionController
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());
+
+        if (is_array($request->efficiency_rules)) {
+            $request->merge([
+                'efficiency_rules' => json_encode($request->efficiency_rules),
+            ]);
+        }
+        $validate = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'type' => 'required|string|in:days,months',
+            'each' => 'required|integer|min:1',
+            'efficiency_rules' => 'nullable',
+            'conditioned' => 'boolean',
+            'conditioned_seniority' => 'boolean',
+            'conditioned_efficiency' => 'boolean',
+            'day_cutoff' => 'required|integer|min:1|max:31',
+        ]);
+
+        //dd($validate);// Debugging line, remove in production
+        Prestacion::create($validate);
+        return redirect()->route('/catalogos/prestaciones')->with('success', 'Prestación creada correctamente.');
     }
 
     /**
@@ -56,7 +77,19 @@ class PrestacionController
      */
     public function update(Request $request, Prestacion $prestacion)
     {
-        //
+        $validate = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'type' => 'required|string|in:days,months',
+            'each' => 'required|integer|min:1',
+            'efficiency_rules' => 'nullable|array',
+            'conditioned' => 'boolean',
+            'conditioned_seniority' => 'boolean',
+            'conditioned_efficiency' => 'boolean',
+            'day_cutoff' => 'required|integer|min:1|max:31',
+        ]);
+        $prestacion->update($validate);
+        return redirect()->route('/catalogos/prestaciones')->with('success', 'Prestación actualizada correctamente.');
     }
 
     /**

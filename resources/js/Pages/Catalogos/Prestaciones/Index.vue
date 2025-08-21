@@ -2,6 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
+import { router } from "@inertiajs/vue3";
 
 const props = defineProps({
     prestaciones: Array,
@@ -12,17 +13,32 @@ const tipoOptions = ref([
     { label: "Días", value: "days" },
     { label: "Meses", value: "months" },
 ]);
+
+const operadores = ref([
+    { label: "<", value: "<" },
+    { label: "<=", value: "<=" },
+    { label: "=", value: "=" },
+    { label: ">=", value: ">=" },
+    { label: ">", value: ">" },
+]);
+
 const prestacion = useForm({
     id: null,
     name: "",
     description: "",
     type: "days",
     each: 1,
-    efficiency_rules: JSON.stringify([]),
-    conditioned: 0,
-    conditioned_seniority: 0,
-    conditioned_efficiency: 0,
+    efficiency_rules: [],
+    conditioned: false,
+    conditioned_seniority: false,
+    conditioned_efficiency: false,
+    day_cutoff: 1,
 });
+
+const openNew = () => {
+    prestacion.reset();
+    visible.value = true;
+};
 
 const lengthEficiencyRules = (prestacion) => {
     const prestacionArray = JSON.parse(prestacion.efficiency_rules);
@@ -40,6 +56,48 @@ const setEach = (prestacion) => {
             return `Cada ${prestacion.each} mes (es)`;
     }
 };
+
+const editPrestacion = (data) => {
+    prestacion.id = data.id;
+    prestacion.name = data.name;
+    prestacion.description = data.description;
+    prestacion.type = data.type;
+    prestacion.each = data.each;
+    prestacion.efficiency_rules = data.efficiency_rules;
+    prestacion.conditioned = data.conditioned === 1 ? true : false;
+    prestacion.conditioned_seniority =
+        data.conditioned_seniority === 1 ? true : false;
+    prestacion.conditioned_efficiency =
+        data.conditioned_efficiency === 1 ? true : false;
+    prestacion.day_cutoff = data.day_cutoff;
+    visible.value = true;
+};
+
+const savePrestacion = () => {
+    for (const regla of prestacion.efficiency_rules) {
+        if (
+            regla.amount === 0 ||
+            regla.amount === null ||
+            regla.operator === "" ||
+            regla.operator === null ||
+            regla.percent === 0 ||
+            regla.percent === null
+        ) {
+            prestacion.setError(
+                "efficiency_rules",
+                "Todas las reglas deben estar completas.",
+            );
+            return;
+        }
+    }
+    prestacion.clearErrors("efficiency_rules");
+
+    prestacion.post("prestaciones/store", {
+        onSuccess: () => {
+            visible.value = false;
+        },
+    });
+};
 </script>
 
 <template>
@@ -48,7 +106,7 @@ const setEach = (prestacion) => {
             <h3 class="mb-0">Prestaciones</h3>
             <Button
                 icon="pi pi-plus"
-                @click="visible = true"
+                @click="openNew"
                 label="Crear Prestación"
             ></Button>
         </div>
@@ -117,6 +175,7 @@ const setEach = (prestacion) => {
                                 severity="warn"
                                 icon="pi pi-pencil"
                                 class="w-full"
+                                @click="editPrestacion(prestacion)"
                             />
                         </div>
                     </template>
@@ -139,6 +198,9 @@ const setEach = (prestacion) => {
                     autocomplete="off"
                     v-model="prestacion.name"
                 />
+                <small v-if="prestacion.errors.name" class="text-red-500"
+                    >Este campo es obligatorio.</small
+                >
             </div>
             <div class="flex flex-col gap-4 mb-4">
                 <label for="descripcion" class="font-semibold w-24"
@@ -163,20 +225,142 @@ const setEach = (prestacion) => {
                     name="tipo"
                     option-label="label"
                     option-value="value"
+                    class="py-1"
+                />
+            </div>
+            <div class="flex flex-col gap-4 mb-4">
+                <label for="cada" class="font-semibold w-24">Cada</label>
+                <InputNumber
+                    v-model="prestacion.each"
+                    inputId="cada"
+                    prefix="Cada "
+                    :suffix="
+                        prestacion.type === 'days' ? ' día (s)' : ' mes (es)'
+                    "
+                    fluid
+                />
+                <small v-if="prestacion.errors.each" class="text-red-500"
+                    >Este campo es obligatorio.</small
+                >
+            </div>
+            <div class="flex flex-col gap-4 mb-4">
+                <label for="cada" class="font-semibold w-24"
+                    >Dia de corte</label
+                >
+                <InputNumber v-model="prestacion.day_cutoff" min="1" max="31" />
+                <small v-if="prestacion.errors.day_cutoff" class="text-red-500"
+                    >Este campo es obligatorio.</small
+                >
+            </div>
+
+            <div class="flex flex-col gap-4 mb-4 w-full">
+                <label for="cada" class="font-semibold w-24"
+                    >Condicionado</label
+                >
+                <div class="flex justify-center">
+                    <ToggleButton
+                        v-model="prestacion.conditioned"
+                        onLabel="Faltas"
+                        offLabel="Faltas"
+                    />
+                    <ToggleButton
+                        v-model="prestacion.conditioned_seniority"
+                        onLabel="Antigüedad"
+                        offLabel="Antigüedad"
+                    />
+                    <ToggleButton
+                        v-model="prestacion.conditioned_efficiency"
+                        onLabel="Eficiencia"
+                        offLabel="Eficiencia"
+                    />
+                </div>
+                <small v-if="prestacion.errors.conditioned" class="text-red-500"
+                    >El campo "Condicionado por Faltas" es obligatorio.</small
+                >
+                <small
+                    v-if="prestacion.errors.conditioned_seniority"
+                    class="text-red-500"
+                    >El campo "Condicionado por Antigüedad" es
+                    obligatorio.</small
+                >
+                <small
+                    v-if="prestacion.errors.conditioned_efficiency"
+                    class="text-red-500"
+                    >El campo "Condicionado por Eficiencia" es
+                    obligatorio.</small
+                >
+            </div>
+            <div class="flex flex-col gap-4 mb-4 w-full">
+                <label for="cada" class="font-semibold"
+                    >Reglas de eficiencia</label
+                >
+                <div
+                    v-for="(regla, i) in prestacion.efficiency_rules"
+                    :key="i"
+                    class="flex justify-center gap-4 mb-4"
+                >
+                    <InputText
+                        v-model="regla.amount"
+                        placeholder="Monto"
+                        class="w-1/4"
+                    />
+                    <Dropdown
+                        v-model="regla.operator"
+                        :options="operadores"
+                        placeholder="Operador"
+                        option-label="label"
+                        option-value="value"
+                    />
+                    <InputText
+                        v-model="regla.percent"
+                        placeholder="Porcentaje"
+                        class="w-1/4"
+                    />
+                    <Button
+                        icon="pi pi-trash"
+                        severity="danger"
+                        class="w-1/12"
+                        @click="prestacion.efficiency_rules.splice(i, 1)"
+                    />
+                </div>
+
+                <small
+                    v-if="prestacion.errors.efficiency_rules"
+                    class="text-red-500"
+                    >Todas las reglas deben estar completas.</small
+                >
+
+                <div
+                    v-if="prestacion.efficiency_rules.length === 0"
+                    class="text-sm text-gray-500 flex flex-col text-center"
+                >
+                    No hay reglas.
+                </div>
+                <Button
+                    label="Agregar"
+                    icon="pi pi-plus"
+                    severity="success"
+                    @click="
+                        prestacion.efficiency_rules.push({
+                            amount: 0,
+                            operator: '',
+                            percent: 0,
+                        })
+                    "
                 />
             </div>
 
             <div class="flex justify-end gap-2">
                 <Button
                     type="button"
-                    label="Cancel"
+                    label="Cancelar"
                     severity="secondary"
                     @click="visible = false"
                 ></Button>
                 <Button
                     type="button"
-                    label="Save"
-                    @click="visible = false"
+                    label="Guardar"
+                    @click="savePrestacion"
                 ></Button>
             </div>
         </Dialog>

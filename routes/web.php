@@ -46,10 +46,10 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->prefix('catalogos')->group(function () {
-    Route::resource('plantas', Controlador::class);
+    //Route::resource('plantas', Controlador::class);
     //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
     Route::get('prestaciones', [PrestacionController::class, 'index'])->name('/catalogos/prestaciones');
-    Route::resource('prestaciones', PrestacionController::class)->except(['index']);
+    Route::post('prestaciones/store', [PrestacionController::class, 'store'])->name('prestaciones.store');
 
 });
 
