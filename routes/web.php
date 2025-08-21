@@ -50,6 +50,8 @@ Route::middleware([
     //Poner aqui las rutas, por defecto ya iran de la manera /catalogos/ruta solo poner Route::resource('nombre', Controlador::class)
     Route::get('prestaciones', [PrestacionController::class, 'index'])->name('/catalogos/prestaciones');
     Route::post('prestaciones/store', [PrestacionController::class, 'store'])->name('prestaciones.store');
+    Route::put('prestaciones/{prestacion}', [PrestacionController::class, 'update'])->name('prestaciones.update');
+    Route::delete('prestaciones/{prestacion}', [PrestacionController::class, 'destroy'])->name('prestaciones.destroy');
 
 });
 

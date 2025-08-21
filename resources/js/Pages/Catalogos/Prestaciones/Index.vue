@@ -3,12 +3,15 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
+import { useToastService } from "@/Stores/toastService";
+const { showSuccess, showError } = useToastService();
 
 const props = defineProps({
     prestaciones: Array,
 });
 
 const visible = ref(false);
+const deletePrestacionDialog = ref(false);
 const tipoOptions = ref([
     { label: "Días", value: "days" },
     { label: "Meses", value: "months" },
@@ -63,7 +66,7 @@ const editPrestacion = (data) => {
     prestacion.description = data.description;
     prestacion.type = data.type;
     prestacion.each = data.each;
-    prestacion.efficiency_rules = data.efficiency_rules;
+    prestacion.efficiency_rules = JSON.parse(data.efficiency_rules);
     prestacion.conditioned = data.conditioned === 1 ? true : false;
     prestacion.conditioned_seniority =
         data.conditioned_seniority === 1 ? true : false;
@@ -92,9 +95,36 @@ const savePrestacion = () => {
     }
     prestacion.clearErrors("efficiency_rules");
 
-    prestacion.post("prestaciones/store", {
+    if (prestacion.id != null) {
+        prestacion.put(`prestaciones/${prestacion.id}`, {
+            onSuccess: () => {
+                visible.value = false;
+                showSuccess();
+            },
+        });
+    } else {
+        prestacion.post("prestaciones/store", {
+            onSuccess: () => {
+                visible.value = false;
+                showSuccess();
+            },
+        });
+    }
+};
+
+const eliminar = (id) => {
+    prestacion.id = id;
+    deletePrestacionDialog.value = true;
+};
+
+const deletePrestacion = () => {
+    prestacion.delete(`prestaciones/${prestacion.id}`, {
         onSuccess: () => {
-            visible.value = false;
+            deletePrestacionDialog.value = false;
+            showSuccess();
+        },
+        onError: () => {
+            showError();
         },
     });
 };
@@ -169,6 +199,7 @@ const savePrestacion = () => {
                                 severity="danger"
                                 class="w-full"
                                 icon="pi pi-trash"
+                                @click="eliminar(prestacion.id)"
                             />
                             <Button
                                 label="Editar"
@@ -363,6 +394,35 @@ const savePrestacion = () => {
                     @click="savePrestacion"
                 ></Button>
             </div>
+        </Dialog>
+        <Dialog
+            v-model:visible="deletePrestacionDialog"
+            :style="{ width: '450px' }"
+            header="Confirmar"
+            :modal="true"
+        >
+            <div class="flex items-center gap-4">
+                <i class="pi pi-exclamation-triangle !text-3xl" />
+                <span
+                    >¿Estás seguro de que deseas eliminar esta prestación?</span
+                >
+            </div>
+            <template #footer>
+                <Button
+                    label="No"
+                    icon="pi pi-times"
+                    text
+                    @click="deletePrestacionDialog = false"
+                    severity="secondary"
+                    variant="text"
+                />
+                <Button
+                    label="Si"
+                    icon="pi pi-check"
+                    @click="deletePrestacion"
+                    severity="danger"
+                />
+            </template>
         </Dialog>
     </AppLayout>
 </template>

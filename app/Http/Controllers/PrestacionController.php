@@ -77,12 +77,17 @@ class PrestacionController
      */
     public function update(Request $request, Prestacion $prestacion)
     {
+        if (is_array($request->efficiency_rules)) {
+            $request->merge([
+                'efficiency_rules' => json_encode($request->efficiency_rules),
+            ]);
+        }
         $validate = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:255',
             'type' => 'required|string|in:days,months',
             'each' => 'required|integer|min:1',
-            'efficiency_rules' => 'nullable|array',
+            'efficiency_rules' => 'nullable',
             'conditioned' => 'boolean',
             'conditioned_seniority' => 'boolean',
             'conditioned_efficiency' => 'boolean',
@@ -97,6 +102,7 @@ class PrestacionController
      */
     public function destroy(Prestacion $prestacion)
     {
-        //
+        $prestacion->delete();
+        return redirect()->route('/catalogos/prestaciones')->with('success', 'Prestación eliminada correctamente.');
     }
 }
