@@ -50,12 +50,17 @@ const model = ref([
             },
             {
                 label: "Catalogos",
-                icon: "pi pi-fw pi-calendar",
+                icon: "pi pi-inbox",
                 items: [
                     {
                         label: "Prestaciones",
-                        icon: "pi pi-circle",
+                        icon: "pi pi-wallet",
                         to: "/catalogos/prestaciones",
+                    },
+                    {
+                        label: "Categorias de Incidencias",
+                        icon: "pi pi-id-card",
+                        to: "/catalogos/categorias-incidencias",
                     },
                 ],
             },

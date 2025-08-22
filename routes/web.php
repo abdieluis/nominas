@@ -7,6 +7,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AssistanceController;
+use App\Http\Controllers\CategoriaIncidenciaController;
 
 Route::get('/', function () {
     return Inertia::render('Auth/Login', [
@@ -52,6 +53,10 @@ Route::middleware([
     Route::post('prestaciones/store', [PrestacionController::class, 'store'])->name('prestaciones.store');
     Route::put('prestaciones/{prestacion}', [PrestacionController::class, 'update'])->name('prestaciones.update');
     Route::delete('prestaciones/{prestacion}', [PrestacionController::class, 'destroy'])->name('prestaciones.destroy');
+
+    Route::get('categorias-incidencias', [CategoriaIncidenciaController::class, 'index'])->name('/catalogos/categorias-incidencias');
+    Route::post('categorias-incidencias/store', [CategoriaIncidenciaController::class, 'store'])->name('categorias-incidencias.store');
+    Route::delete('categorias-incidencias/{categoria}', [CategoriaIncidenciaController::class, 'destroy'])->name('categorias-incidencias.destroy');
 
 });
 
